@@ -1,0 +1,4 @@
+SELECT * 
+From student
+FuLL OUTER JOIN course
+On student.Course_id = course.Course_id;
