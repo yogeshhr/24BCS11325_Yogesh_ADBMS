@@ -1,0 +1,19 @@
+WITH total_sessions AS (
+    SELECT COUNT(DISTINCT session_id) AS total_site_sessions
+    FROM site_sessions
+),
+interest_sessions AS (
+    SELECT COUNT(DISTINCT session_id) AS total_interest_sessions
+    FROM product_interest
+),
+order_sessions AS (
+    SELECT COUNT(DISTINCT session_id) AS total_order_sessions
+    FROM completed_orders
+)
+SELECT 
+    ROUND((i.total_interest_sessions * 100.0) / s.total_site_sessions, 2) AS interest_conversion,
+    ROUND((o.total_order_sessions * 100.0) / i.total_interest_sessions, 2) AS order_conversion,
+    ROUND((o.total_order_sessions * 100.0) / s.total_site_sessions, 2) AS overall_conversion
+FROM total_sessions s
+CROSS JOIN interest_sessions i
+CROSS JOIN order_sessions o;
